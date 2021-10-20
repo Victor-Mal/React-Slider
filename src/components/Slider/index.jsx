@@ -12,6 +12,8 @@ const arrayImages = [
 export default function Slider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [running, setRunning] = useState(false);
+  const [speed, setSpeed] = useState(1000);
+
 
   const prevSlide = () => {
     setCurrentSlide(
@@ -26,25 +28,33 @@ export default function Slider() {
     setRunning((running) => !running);
   };
 
+  const onChange  = (event) => {  
+    setSpeed(
+      event.target.value
+    )
+  }
+  
   useEffect(() => {
     if (!running) {
-      console.log(running);
       return;
     }
     const intervalID = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % arrayImages.length);
-      console.log(currentSlide);
-    }, 2000);
+    }, speed);
 
     return () => {
       clearInterval(intervalID);
     };
-  }, [currentSlide, running]);
+  }, [currentSlide, running, speed]);
   return (
     <div>
       <Button title={"Prev"} action={prevSlide} />
       <img src={arrayImages[currentSlide]} alt="slide" />
       <Button title={"Next"} action={nextSlide} />
+     
+      <input type='range' name='speed switch' value={speed} 
+       step={1000} min= {1000} max={10000} onChange={ onChange  }  />
+      
       <Button title={"Slide Show"} action={autoSlide} />
     </div>
   );
