@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Button/index";
+import {right_arrow, left_arrow, fullscreen, run } from "components/assets/icons"
 
 const arrayImages = [
   "https://hubblesite.org/files/live/sites/hubble/files/home/hubble-30th-anniversary/images/_images/hubble_30th_images/hubble-30th-cosmic-reef-2400x1200.jpg?t=tn992",
@@ -28,13 +29,15 @@ export default function Slider() {
     setRunning((running) => !running);
   };
 
-  const onChange  = (event) => {  
+  const changeSpeed  = (event) => {  
     setSpeed(
       event.target.value
     )
   }
 
-  function toggleFullScreen() {
+
+
+ const toggleFullScreen = () =>  {
     if (!document.fullscreenElement) {
         document.getElementById("imgSlide").requestFullscreen();
     } else {
@@ -61,15 +64,16 @@ export default function Slider() {
   }, [currentSlide, running, speed]);
   return (
     <div>
-      <Button title={"Prev"} action={prevSlide} />
+      <Button title={<img  src={left_arrow} alt="left arrow" />} action={prevSlide}> </Button>
       <img id="imgSlide" src={arrayImages[currentSlide]} alt="slide" />
-      <Button title={"Next"} action={nextSlide} />
+      <Button title={<img src={right_arrow} alt="right arrow" />} action={nextSlide} />
      
       <input type='range' name='speed switch' value={speed} 
-       step={1000} min= {1000} max={10000} onChange={ onChange  }  />
+       step={1000} min= {1000} max={10000} onChange={ changeSpeed  }  />
       
-      <Button title={"Slide Show"} action={autoSlide} />
-      <Button title={"Fullscreen"} action={toggleFullScreen} />
+      <Button title={<img src={run} alt="run" />} action={autoSlide} />
+      <Button title={<img src={fullscreen} alt="fullscreen" />} action={toggleFullScreen} />
+      
     </div>
   );
 }
