@@ -33,6 +33,19 @@ export default function Slider() {
       event.target.value
     )
   }
+
+  function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.getElementById("imgSlide").requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  }
+
+
+
   
   useEffect(() => {
     if (!running) {
@@ -49,13 +62,14 @@ export default function Slider() {
   return (
     <div>
       <Button title={"Prev"} action={prevSlide} />
-      <img src={arrayImages[currentSlide]} alt="slide" />
+      <img id="imgSlide" src={arrayImages[currentSlide]} alt="slide" />
       <Button title={"Next"} action={nextSlide} />
      
       <input type='range' name='speed switch' value={speed} 
        step={1000} min= {1000} max={10000} onChange={ onChange  }  />
       
       <Button title={"Slide Show"} action={autoSlide} />
+      <Button title={"Fullscreen"} action={toggleFullScreen} />
     </div>
   );
 }
