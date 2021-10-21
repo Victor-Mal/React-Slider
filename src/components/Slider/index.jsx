@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Button from "../Button/index";
-import {right_arrow, left_arrow, fullscreen, run } from "components/assets/icons"
+import {
+  right_arrow,
+  left_arrow,
+  fullscreen,
+  run,
+} from "components/assets/icons";
+import "./slider.sass";
+import classNames from "classnames";
 
 const arrayImages = [
   "https://hubblesite.org/files/live/sites/hubble/files/home/hubble-30th-anniversary/images/_images/hubble_30th_images/hubble-30th-cosmic-reef-2400x1200.jpg?t=tn992",
@@ -15,6 +22,8 @@ export default function Slider() {
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(1000);
 
+  const btnRight = classNames("btnStyle", "btnRight");
+  const btnLeft = classNames("btnStyle", "btnLeft");
 
   const prevSlide = () => {
     setCurrentSlide(
@@ -28,28 +37,18 @@ export default function Slider() {
   const autoSlide = () => {
     setRunning((running) => !running);
   };
-
-  const changeSpeed  = (event) => {  
-    setSpeed(
-      event.target.value
-    )
-  }
-
-
-
- const toggleFullScreen = () =>  {
+  const changeSpeed = (event) => {
+    setSpeed(event.target.value);
+  };
+  const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
-        document.getElementById("imgSlide").requestFullscreen();
+      document.getElementById("imgSlide").requestFullscreen();
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
       }
     }
-  }
-
-
-
-  
+  };
   useEffect(() => {
     if (!running) {
       return;
@@ -57,23 +56,49 @@ export default function Slider() {
     const intervalID = setInterval(() => {
       setCurrentSlide((prevSlide) => (prevSlide + 1) % arrayImages.length);
     }, speed);
-
     return () => {
       clearInterval(intervalID);
     };
   }, [currentSlide, running, speed]);
+
   return (
     <div>
-      <Button title={<img  src={left_arrow} alt="left arrow" />} action={prevSlide}> </Button>
-      <img id="imgSlide" src={arrayImages[currentSlide]} alt="slide" />
-      <Button title={<img src={right_arrow} alt="right arrow" />} action={nextSlide} />
-     
-      <input type='range' name='speed switch' value={speed} 
-       step={1000} min= {1000} max={10000} onChange={ changeSpeed  }  />
-      
-      <Button title={<img src={run} alt="run" />} action={autoSlide} />
-      <Button title={<img src={fullscreen} alt="fullscreen" />} action={toggleFullScreen} />
-      
+      <div className="monitor">
+        <div className="sliderScreen">
+          <Button
+            className={btnRight}
+            title={<img src={left_arrow} alt="left arrow" />}
+            action={prevSlide}
+          />
+          <img
+            className="slide"
+            id="imgSlide"
+            src={arrayImages[currentSlide]}
+            alt="slide"
+          />
+          <Button
+            className={btnLeft}
+            title={<img src={right_arrow} alt="right arrow" />}
+            action={nextSlide}
+          />
+        </div>
+        <div>
+          <Button title={<img src={run} alt="run" />} action={autoSlide} />
+          <input
+            type="range"
+            name="speed switch"
+            value={speed}
+            step={1000}
+            min={1000}
+            max={10000}
+            onChange={changeSpeed}
+          />
+          <Button
+            title={<img src={fullscreen} alt="fullscreen" />}
+            action={toggleFullScreen}
+          />
+        </div>
+      </div>
     </div>
   );
 }
