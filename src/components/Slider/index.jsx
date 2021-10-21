@@ -10,15 +10,12 @@ import {
 import "./slider.sass";
 import classNames from "classnames";
 
-const arrayImages = [
-  "https://hubblesite.org/files/live/sites/hubble/files/home/hubble-30th-anniversary/images/_images/hubble_30th_images/hubble-30th-cosmic-reef-2400x1200.jpg?t=tn992",
-  "https://hubblesite.org/files/live/sites/hubble/files/home/hubble-30th-anniversary/images/_images/hubble_30th_images/hubble-30th-eagle-nebula.jpg?t=tn992",
-  "https://hubblesite.org/files/live/sites/hubble/files/home/hubble-30th-anniversary/images/_images/hubble_30th_images/hubble-30th-saturn.jpg?t=tn992",
-  "https://hubblesite.org/files/live/sites/hubble/files/home/hubble-30th-anniversary/images/_images/hubble_30th_images/hubble-30th-bubble-nebula.jpg?t=tn992",
-  "https://hubblesite.org/files/live/sites/hubble/files/home/hubble-30th-anniversary/images/_images/hubble_30th_images/hubble-30th-whirlpool-galaxy.jpg?t=tn992",
-];
 
-export default function Slider() {
+
+export default function Slider(props) { 
+
+  const arrayImages = props.arrayImages; 
+
   const [currentSlide, setCurrentSlide] = useState(0);
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(1000);
@@ -26,6 +23,8 @@ export default function Slider() {
 
   const btnRight = classNames("btnStyle", "btnRight");
   const btnLeft = classNames("btnStyle", "btnLeft");
+
+ 
 
   const startButton = () => {
     switchSlideIcon();
@@ -41,16 +40,19 @@ export default function Slider() {
       (prevSlide) => (prevSlide - 1 + arrayImages.length) % arrayImages.length
     );
   };
+
   const nextSlide = () => {
     setCurrentSlide((prevSlide) => (prevSlide + 1) % arrayImages.length);
-    console.log(currentSlide);
   };
+
   const autoSlide = () => {
     setRunning((running) => !running);
   };
+
   const changeSpeed = (event) => {
     setSpeed(event.target.value);
   };
+  
   const toggleFullScreen = () => {
     if (!document.fullscreenElement) {
       document.getElementById("imgSlide").requestFullscreen();
@@ -70,7 +72,7 @@ export default function Slider() {
     return () => {
       clearInterval(intervalID);
     };
-  }, [currentSlide, running, speed]);
+  }, [currentSlide, running, speed, arrayImages.length]);
 
   return (
     <div>
