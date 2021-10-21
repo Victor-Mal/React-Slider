@@ -5,6 +5,7 @@ import {
   left_arrow,
   fullscreen,
   run,
+  pause,
 } from "components/assets/icons";
 import "./slider.sass";
 import classNames from "classnames";
@@ -21,9 +22,19 @@ export default function Slider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState(1000);
+  const [turntable, setTurntable] = useState(run);
 
   const btnRight = classNames("btnStyle", "btnRight");
   const btnLeft = classNames("btnStyle", "btnLeft");
+
+  const startButton = () => {
+    switchSlideIcon();
+    autoSlide();
+  };
+
+  const switchSlideIcon = () => {
+    turntable === run ? setTurntable(pause) : setTurntable(run);
+  };
 
   const prevSlide = () => {
     setCurrentSlide(
@@ -83,7 +94,7 @@ export default function Slider() {
           />
         </div>
         <div>
-          <Button title={<img src={run} alt="run" />} action={autoSlide} />
+          <Button title={<img src={turntable} alt="run" />} action={startButton} />
           <input
             type="range"
             name="speed switch"
